@@ -34,9 +34,10 @@ class AccountControllerTest {
 
     @Test
     void getSortedTransactionalAccountsByClientId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/account/transactional/client/{id}", 1)
+        mockMvc.perform(MockMvcRequestBuilders.get("/account/transactional")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .param("clientId", "1"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -44,9 +45,35 @@ class AccountControllerTest {
     @Test
     void givenClientHasNoQualifyingAccounts_whenGetSortedTransactionalAccountsByClientId_theExpects404() throws Exception {
         when(mockAccountService.getSortedTransactionalAccountsByClientId(anyInt())).thenThrow(new ClientAccountException(NO_ACCOUNTS_MSG));
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/account/transactional/client/{id}", 1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/account/transactional")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .param("clientId", "1"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        String actualResponseBody = mvcResult.getResolvedException().getMessage();
+        assertTrue(actualResponseBody.equalsIgnoreCase(NO_ACCOUNTS_MSG));
+
+    }
+
+    @Test
+    void getSortedCurrencyAccountsByClientId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/account/currency")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("clientId", "1"))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void givenClientHasNoQualifyingAccounts_whenGetSortedCurrencyAccountsByClientId_theExpects404() throws Exception {
+        when(mockAccountService.getSortedCurrencyAccountsByClientId(anyInt())).thenThrow(new ClientAccountException(NO_ACCOUNTS_MSG));
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/account/currency")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("clientId", "1"))
                 .andExpect(status().isNotFound())
                 .andReturn();
 
