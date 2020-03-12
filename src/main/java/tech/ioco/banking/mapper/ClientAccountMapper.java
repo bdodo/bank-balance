@@ -14,6 +14,4 @@ public interface ClientAccountMapper {
             @Result(property = "currency", column = "CURRENCY_CODE", one = @One(select = "tech.ioco.banking.mapper.CurrencyMapper.findByCode"))
     })
     List<ClientAccount> findAllByClientId(int clientId);
-
-    List<ClientAccount> findTransactionalAccountsByClientId(int clientId);
 }
