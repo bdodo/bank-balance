@@ -9,4 +9,5 @@ public class Currency {
     private String currencyCode;
     private String description;
     private int decimalPlaces;
+    private CurrencyConversionRate currencyConversionRate;
 }

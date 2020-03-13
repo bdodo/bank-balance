@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class Denomination {
-    private int denomitaionId;
+    private int denominationId;
     private BigDecimal value;
     private DenominationType denominationType;
 }
