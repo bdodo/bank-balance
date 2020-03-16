@@ -6,3 +6,4 @@ The goal of the Bank Balance and Dispensing System is to calculate and display t
 
 localhost:8080/v2/api-docs
 
+Scripts for 4.2.4 and 4.2.5 are in src/maim/resources
