@@ -1,0 +1,42 @@
+-- Answer to 4.2.5 - Calculate aggregate financial position per client
+WITH  LOANBALANCE
+ AS
+ (SELECT CLIENT_ID
+              , SUM(DISPLAY_BALANCE) AS LOANBALANCE
+           FROM CLIENT_ACCOUNT
+		   WHERE ACCOUNT_TYPE_CODE in('HLOAN','PLOAN')
+         GROUP
+             BY CLIENT_ID
+			 )
+,TRANSACTIONALBALANCE
+AS
+ (SELECT CLIENT_ID
+              , SUM(DISPLAY_BALANCE) AS TRANSACTIONALBALANCE
+           FROM CLIENT_ACCOUNT ca
+		   JOIN ACCOUNT_TYPE ac
+		   ON ac.ACCOUNT_TYPE_CODE= ca.ACCOUNT_TYPE_CODE
+		  WHERE ac.TRANSACTIONAL=1
+         GROUP
+             BY CLIENT_ID
+			 )
+,NETPOSTION
+AS
+ (SELECT CLIENT_ID
+              , SUM(DISPLAY_BALANCE) AS NETPOSTION
+           FROM CLIENT_ACCOUNT ca
+
+         GROUP
+             BY CLIENT_ID
+			 )
+
+SELECT  (c.TITLE+' '+c.NAME+' '+c.SURNAME) AS Client,
+        ISNUlL(LOANBALANCE,0) AS [Loan Balance],
+		TRANSACTIONALBALANCE AS [Transactional Balance],
+		NETPOSTION AS [Net Position]
+   from CLIENT c
+   LEFT JOIN  LOANBALANCE lb
+   ON lb.CLIENT_ID=c.CLIENT_ID
+   JOIN  TRANSACTIONALBALANCE tb
+   ON tb.CLIENT_ID =c.CLIENT_ID
+   JOIN NETPOSTION np
+   ON np.CLIENT_ID =c.CLIENT_ID
