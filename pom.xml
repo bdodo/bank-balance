@@ -17,7 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <mybatis.version>2.1.2</mybatis.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>2.10.0</swagger.version>
     </properties>
 
     <dependencies>
